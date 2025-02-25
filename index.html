@@ -59,7 +59,7 @@
                 </div>
                 <div class="toggle"></div>
             </div>
-            <!-- 原有的谷歌搜索框 -->
+            <!-- 添加的谷歌搜索框 -->
             <div class="search-box" style="padding: 20px; text-align: center;">
                 <form action="https://www.google.com/search" method="get" target="_blank">
                     <input 
@@ -79,7 +79,7 @@
             <!-- 新增的聊天框 -->
             <div class="chat-container">
                 <div class="chat-output" id="chat-output"></div>
-                <input type="text" class="chat-input" id="chat-input" placeholder="与 AI 对话...">
+                <input type="text" class="chat-input" id="chat-input" placeholder="与 ChatGPT 对话...">
                 <button class="chat-button" onclick="sendMessage()">
                     <i class="fa-solid fa-paper-plane"></i>
                 </button>
@@ -114,7 +114,7 @@
                 card.classList.toggle('active');
             };
 
-            // 聊天功能，使用 Hugging Face Inference API
+            // 聊天功能，使用 OpenAI API
             async function sendMessage() {
                 const input = document.getElementById("chat-input").value;
                 const output = document.getElementById("chat-output");
@@ -125,25 +125,23 @@
                 output.scrollTop = output.scrollHeight; // 自动滚动到底部
 
                 try {
-                    const response = await fetch(
-                        "https://api-inference.huggingface.co/models/facebook/blenderbot-400M-distill",
-                        {
-                            method: "POST",
-                            headers: {
-                                "Authorization": "Bearer YOUR_HUGGINGFACE_API_TOKEN",
-                                "Content-Type": "application/json",
-                            },
-                            body: JSON.stringify({
-                                inputs: input,
-                                parameters: { max_length: 100 },
-                            }),
-                        }
-                    );
+                    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+                        method: "POST",
+                        headers: {
+                            "Authorization": "Bearer sk-proj-wNTPUgq9n5XOlILXNrVcUdO6X-hCHJ5Oe36SsvP7Lj4BaLUKwORc8HhlYkT-peueFOKJYcLoA8T3BlbkFJOerp",
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            model: "gpt-3.5-turbo",
+                            messages: [{ role: "user", content: input }],
+                            max_tokens: 150,
+                        }),
+                    });
                     const data = await response.json();
-                    const reply = data[0]?.generated_text || "抱歉，我没听懂！";
-                    output.innerHTML += `<p><strong>AI:</strong> ${reply}</p>`;
+                    const reply = data.choices[0].message.content || "抱歉，我没听懂！";
+                    output.innerHTML += `<p><strong>ChatGPT:</strong> ${reply}</p>`;
                 } catch (error) {
-                    output.innerHTML += `<p><strong>AI:</strong> 出错了，请稍后再试！</p>`;
+                    output.innerHTML += `<p><strong>ChatGPT:</strong> 出错了，请检查密钥或稍后再试！</p>`;
                 }
                 output.scrollTop = output.scrollHeight; // 再次滚动到底部
                 document.getElementById("chat-input").value = ""; // 清空输入框
