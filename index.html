@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"> 
+<html lang="en">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -13,144 +13,6 @@
             crossorigin="anonymous"
             referrerpolicy="no-referrer"
         />
-        <style>
-            /* 整体背景 */
-            body {
-                background: linear-gradient(to bottom, #4a6d8a, #2c3e50);
-                margin: 0;
-                height: 100vh;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-            }
-
-            .card {
-                background: rgba(255, 255, 255, 0.1);
-                backdrop-filter: blur(10px);
-                border-radius: 15px;
-                padding: 20px;
-                box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-                width: 350px;
-                color: white;
-            }
-
-            .user {
-                text-align: center;
-                margin-bottom: 20px;
-            }
-
-            .img-box img {
-                width: 80px;
-                height: 80px;
-                border-radius: 50%;
-                border: 3px solid #3498db;
-            }
-
-            .content h2, .content h1 {
-                margin: 10px 0;
-                color: white;
-            }
-
-            .toggle {
-                display: none; /* 隐藏 toggle 按钮，如果不需要可删除 */
-            }
-
-            /* 搜索框样式 */
-            .search-box {
-                padding: 20px;
-                text-align: center;
-            }
-            .search-box input {
-                padding: 10px;
-                width: 250px;
-                border: 1px solid #ccc;
-                border-radius: 5px;
-                font-size: 16px;
-            }
-            .search-box button {
-                padding: 10px;
-                background: #4285f4;
-                color: white;
-                border: none;
-                border-radius: 5px;
-                cursor: pointer;
-                margin-left: 10px;
-                width: 40px;
-            }
-
-            /* 聊天框样式 */
-            .chat-container {
-                padding: 20px;
-                text-align: center;
-            }
-            .chat-output {
-                background: white;
-                border-radius: 10px;
-                padding: 15px;
-                height: 300px;
-                overflow-y: auto;
-                margin-bottom: 10px;
-                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-                color: #333;
-            }
-            .chat-output p {
-                margin: 5px 0;
-                padding: 8px;
-                background: #f1f1f1;
-                border-radius: 5px;
-                display: inline-block;
-                max-width: 80%;
-            }
-            .chat-output p strong {
-                font-weight: bold;
-            }
-            .chat-input-container {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-            .chat-input {
-                padding: 10px;
-                width: 250px;
-                border: 1px solid #ccc;
-                border-radius: 20px;
-                font-size: 16px;
-                margin-right: 10px;
-            }
-            .chat-button {
-                padding: 10px;
-                background: #3498db;
-                color: white;
-                border: none;
-                border-radius: 50%;
-                cursor: pointer;
-                width: 40px;
-                height: 40px;
-                font-size: 14px;
-            }
-            .chat-button i {
-                font-size: 14px;
-            }
-
-            /* 联系方式样式 */
-            .contact li {
-                margin: 10px 0;
-            }
-            .contact .icon-box {
-                background: #3498db;
-                border-radius: 50%;
-                width: 40px;
-                height: 40px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                margin: 0 auto 10px;
-            }
-            .contact p {
-                color: white;
-                font-size: 14px;
-            }
-        </style>
     </head>
     <body>
         <div class="card">
@@ -181,16 +43,7 @@
                     </button>
                 </form>
             </div>
-            <!-- 新增的聊天框 -->
-            <div class="chat-container">
-                <div class="chat-output" id="chat-output"></div>
-                <div class="chat-input-container">
-                    <input type="text" class="chat-input" id="chat-input" placeholder="与 ChatGPT 对话...">
-                    <button class="chat-button" onclick="sendMessage()">
-                        <i class="fa-solid fa-paper-plane"></i>
-                    </button>
-                </div>
-            </div>
+            <!-- 搜索框结束 -->
             <ul class="contact">
                 <li style="--cir: #c71610; --i: 0">
                     <a href="https://github.com" target="_blank">
@@ -212,39 +65,11 @@
                 </li>
             </ul>
         </div>
-
         <script>
-            // 原有的 toggle 功能
-            let toggle = document.querySelector('.toggle');
-            let card = document.querySelector('.card');
+            let toggle = document.querySelector('.toggle')
+            let card = document.querySelector('.card')
             toggle.onclick = () => {
-                card.classList.toggle('active');
-            };
-
-            // 聊天功能，使用后端代理调用 OpenAI API
-            async function sendMessage() {
-                const input = document.getElementById("chat-input").value;
-                const output = document.getElementById("chat-output");
-                if (!input) return; // 如果输入为空则不处理
-
-                // 显示用户输入
-                output.innerHTML += `<p><strong>你:</strong> ${input}</p>`;
-                output.scrollTop = output.scrollHeight; // 自动滚动到底部
-
-                try {
-                    const response = await fetch("https://your-backend-url/chat", { // 替换为你的后端 URL
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ message: input }),
-                    });
-                    const data = await response.json();
-                    const reply = data.reply || "抱歉，我没听懂！";
-                    output.innerHTML += `<p><strong>ChatGPT:</strong> ${reply}</p>`;
-                } catch (error) {
-                    output.innerHTML += `<p><strong>ChatGPT:</strong> 出错了，请稍后再试！</p>`;
-                }
-                output.scrollTop = output.scrollHeight; // 再次滚动到底部
-                document.getElementById("chat-input").value = ""; // 清空输入框
+                card.classList.toggle('active')
             }
         </script>
     </body>
