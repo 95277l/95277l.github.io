@@ -114,7 +114,7 @@
                 card.classList.toggle('active');
             };
 
-            // 聊天功能
+            // 聊天功能，使用 Hugging Face Inference API
             async function sendMessage() {
                 const input = document.getElementById("chat-input").value;
                 const output = document.getElementById("chat-output");
@@ -125,14 +125,23 @@
                 output.scrollTop = output.scrollHeight; // 自动滚动到底部
 
                 try {
-                    // 这里替换为你的后端 API URL
-                    const response = await fetch("YOUR_BACKEND_API_URL", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ message: input })
-                    });
+                    const response = await fetch(
+                        "https://api-inference.huggingface.co/models/facebook/blenderbot-400M-distill",
+                        {
+                            method: "POST",
+                            headers: {
+                                "Authorization": "Bearer YOUR_HUGGINGFACE_API_TOKEN",
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify({
+                                inputs: input,
+                                parameters: { max_length: 100 },
+                            }),
+                        }
+                    );
                     const data = await response.json();
-                    output.innerHTML += `<p><strong>AI:</strong> ${data.reply}</p>`;
+                    const reply = data[0]?.generated_text || "抱歉，我没听懂！";
+                    output.innerHTML += `<p><strong>AI:</strong> ${reply}</p>`;
                 } catch (error) {
                     output.innerHTML += `<p><strong>AI:</strong> 出错了，请稍后再试！</p>`;
                 }
