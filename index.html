@@ -14,28 +14,60 @@
             referrerpolicy="no-referrer"
         />
         <style>
-            /* 聊天框样式 */
-            .chat-container {
+            /* 整体背景 */
+            body {
+                background: linear-gradient(to bottom, #4a6d8a, #2c3e50);
+                margin: 0;
+                height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .card {
+                background: rgba(255, 255, 255, 0.1);
+                backdrop-filter: blur(10px);
+                border-radius: 15px;
+                padding: 20px;
+                box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+                width: 350px;
+                color: white;
+            }
+
+            .user {
+                text-align: center;
+                margin-bottom: 20px;
+            }
+
+            .img-box img {
+                width: 80px;
+                height: 80px;
+                border-radius: 50%;
+                border: 3px solid #3498db;
+            }
+
+            .content h2, .content h1 {
+                margin: 10px 0;
+                color: white;
+            }
+
+            .toggle {
+                display: none; /* 隐藏 toggle 按钮，如果不需要可删除 */
+            }
+
+            /* 搜索框样式 */
+            .search-box {
                 padding: 20px;
                 text-align: center;
             }
-            .chat-output {
-                border: 1px solid #ccc;
-                padding: 10px;
-                height: 200px;
-                overflow-y: auto;
-                margin-bottom: 10px;
-                background: #f9f9f9;
-                border-radius: 5px;
-            }
-            .chat-input {
+            .search-box input {
                 padding: 10px;
                 width: 250px;
                 border: 1px solid #ccc;
                 border-radius: 5px;
                 font-size: 16px;
             }
-            .chat-button {
+            .search-box button {
                 padding: 10px;
                 background: #4285f4;
                 color: white;
@@ -44,6 +76,79 @@
                 cursor: pointer;
                 margin-left: 10px;
                 width: 40px;
+            }
+
+            /* 聊天框样式 */
+            .chat-container {
+                padding: 20px;
+                text-align: center;
+            }
+            .chat-output {
+                background: white;
+                border-radius: 10px;
+                padding: 15px;
+                height: 300px;
+                overflow-y: auto;
+                margin-bottom: 10px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                color: #333;
+            }
+            .chat-output p {
+                margin: 5px 0;
+                padding: 8px;
+                background: #f1f1f1;
+                border-radius: 5px;
+                display: inline-block;
+                max-width: 80%;
+            }
+            .chat-output p strong {
+                font-weight: bold;
+            }
+            .chat-input-container {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .chat-input {
+                padding: 10px;
+                width: 250px;
+                border: 1px solid #ccc;
+                border-radius: 20px;
+                font-size: 16px;
+                margin-right: 10px;
+            }
+            .chat-button {
+                padding: 10px;
+                background: #3498db;
+                color: white;
+                border: none;
+                border-radius: 50%;
+                cursor: pointer;
+                width: 40px;
+                height: 40px;
+                font-size: 14px;
+            }
+            .chat-button i {
+                font-size: 14px;
+            }
+
+            /* 联系方式样式 */
+            .contact li {
+                margin: 10px 0;
+            }
+            .contact .icon-box {
+                background: #3498db;
+                border-radius: 50%;
+                width: 40px;
+                height: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin: 0 auto 10px;
+            }
+            .contact p {
+                color: white;
+                font-size: 14px;
             }
         </style>
     </head>
@@ -79,10 +184,12 @@
             <!-- 新增的聊天框 -->
             <div class="chat-container">
                 <div class="chat-output" id="chat-output"></div>
-                <input type="text" class="chat-input" id="chat-input" placeholder="与 ChatGPT 对话...">
-                <button class="chat-button" onclick="sendMessage()">
-                    <i class="fa-solid fa-paper-plane"></i>
-                </button>
+                <div class="chat-input-container">
+                    <input type="text" class="chat-input" id="chat-input" placeholder="与 ChatGPT 对话...">
+                    <button class="chat-button" onclick="sendMessage()">
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                </div>
             </div>
             <ul class="contact">
                 <li style="--cir: #c71610; --i: 0">
