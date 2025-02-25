@@ -13,6 +13,12 @@
             crossorigin="anonymous"
             referrerpolicy="no-referrer"
         />
+        <style>
+            /* 自定义占位符文字颜色为蓝色 */
+            .search-box input::placeholder {
+                color: #0000FF; /* 蓝色 */
+            }
+        </style>
     </head>
     <body>
         <div class="card">
@@ -33,7 +39,7 @@
                         type="text" 
                         name="q" 
                         placeholder="搜索网络..." 
-                        style="padding: 10px; width: 250px; border: 1px solid #ccc; border-radius: 5px; font-size: 16px; color: #0000FF;"
+                        style="padding: 10px; width: 250px; border: 1px solid #ccc; border-radius: 5px; font-size: 16px;"
                     >
                     <button 
                         type="submit" 
