@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"> 
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -13,6 +13,39 @@
             crossorigin="anonymous"
             referrerpolicy="no-referrer"
         />
+        <style>
+            /* 聊天框样式 */
+            .chat-container {
+                padding: 20px;
+                text-align: center;
+            }
+            .chat-output {
+                border: 1px solid #ccc;
+                padding: 10px;
+                height: 200px;
+                overflow-y: auto;
+                margin-bottom: 10px;
+                background: #f9f9f9;
+                border-radius: 5px;
+            }
+            .chat-input {
+                padding: 10px;
+                width: 250px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                font-size: 16px;
+            }
+            .chat-button {
+                padding: 10px;
+                background: #4285f4;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                margin-left: 10px;
+                width: 40px;
+            }
+        </style>
     </head>
     <body>
         <div class="card">
@@ -26,7 +59,7 @@
                 </div>
                 <div class="toggle"></div>
             </div>
-            <!-- 添加的谷歌搜索框 -->
+            <!-- 原有的谷歌搜索框 -->
             <div class="search-box" style="padding: 20px; text-align: center;">
                 <form action="https://www.google.com/search" method="get" target="_blank">
                     <input 
@@ -43,7 +76,14 @@
                     </button>
                 </form>
             </div>
-            <!-- 搜索框结束 -->
+            <!-- 新增的聊天框 -->
+            <div class="chat-container">
+                <div class="chat-output" id="chat-output"></div>
+                <input type="text" class="chat-input" id="chat-input" placeholder="与 AI 对话...">
+                <button class="chat-button" onclick="sendMessage()">
+                    <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </div>
             <ul class="contact">
                 <li style="--cir: #c71610; --i: 0">
                     <a href="https://github.com" target="_blank">
@@ -65,11 +105,39 @@
                 </li>
             </ul>
         </div>
+
         <script>
-            let toggle = document.querySelector('.toggle')
-            let card = document.querySelector('.card')
+            // 原有的 toggle 功能
+            let toggle = document.querySelector('.toggle');
+            let card = document.querySelector('.card');
             toggle.onclick = () => {
-                card.classList.toggle('active')
+                card.classList.toggle('active');
+            };
+
+            // 聊天功能
+            async function sendMessage() {
+                const input = document.getElementById("chat-input").value;
+                const output = document.getElementById("chat-output");
+                if (!input) return; // 如果输入为空则不处理
+
+                // 显示用户输入
+                output.innerHTML += `<p><strong>你:</strong> ${input}</p>`;
+                output.scrollTop = output.scrollHeight; // 自动滚动到底部
+
+                try {
+                    // 这里替换为你的后端 API URL
+                    const response = await fetch("YOUR_BACKEND_API_URL", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ message: input })
+                    });
+                    const data = await response.json();
+                    output.innerHTML += `<p><strong>AI:</strong> ${data.reply}</p>`;
+                } catch (error) {
+                    output.innerHTML += `<p><strong>AI:</strong> 出错了，请稍后再试！</p>`;
+                }
+                output.scrollTop = output.scrollHeight; // 再次滚动到底部
+                document.getElementById("chat-input").value = ""; // 清空输入框
             }
         </script>
     </body>
