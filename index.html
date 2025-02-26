@@ -18,6 +18,13 @@
             .search-box input::placeholder {
                 color: #000000; /* 黑色 */
             }
+
+            /* 调整搜索框位置 */
+            .search-box {
+                padding: 20px;
+                text-align: center;
+                margin-top: 10px; /* 向下移动 10 像素 */
+            }
         </style>
     </head>
     <body>
@@ -33,7 +40,7 @@
                 <div class="toggle"></div>
             </div>
             <!-- 添加的谷歌搜索框 -->
-            <div class="search-box" style="padding: 20px; text-align: center;">
+            <div class="search-box">
                 <form action="https://www.google.com/search" method="get" target="_blank">
                     <input 
                         type="text" 
