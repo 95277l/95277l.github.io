@@ -17,6 +17,16 @@
             referrerpolicy="no-referrer"
         />
         <style>
+            /* 背景图片（与学习相关，浅色透明） */
+            body {
+                background-image: url('https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+                margin: 0;
+                font-family: Arial, sans-serif;
+            }
+
             .search-box input::placeholder {
                 color: #000000;
             }
@@ -34,18 +44,23 @@
                 background-color: #333333;
                 color: #ffffff;
             }
-            .chat-button {
-                padding: 10px 20px;
-                background: #4285f4;
+            .chat-button, .bye-button {
+                padding: 12px 25px; /* 增大按钮大小 */
                 color: white;
                 border: none;
                 border-radius: 5px;
                 cursor: pointer;
                 margin-left: 10px;
             }
+            .chat-button {
+                background: #4169E1; /* 更亮的蓝色 */
+            }
+            .bye-button {
+                background: #FF4040; /* 更深的红色 */
+            }
             .chat-response {
-                margin-top: 15px;
-                padding: 10px;
+                margin-top: 20px; /* 增大间距 */
+                padding: 15px; /* 增加内边距 */
                 background: #f5f5f5;
                 border-radius: 5px;
                 color: #333;
@@ -60,6 +75,81 @@
                 0% { opacity: 1; }
                 50% { opacity: 0.5; }
                 100% { opacity: 1; }
+            }
+            /* 卡片样式 */
+            .card {
+                background: rgba(255, 255, 255, 0.9); /* 半透明白色卡片 */
+                border-radius: 10px;
+                padding: 20px;
+                margin: 20px auto;
+                max-width: 800px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+            .user {
+                display: flex;
+                align-items: center;
+                margin-bottom: 20px;
+            }
+            .img-box img {
+                border-radius: 50%;
+                width: 100px;
+                height: 100px;
+            }
+            .content h2, .content h1 {
+                margin: 0;
+                font-weight: bold;
+            }
+            .content h2 {
+                font-size: 18px;
+                color: #666;
+            }
+            .content h1 {
+                font-size: 24px;
+                color: #333;
+            }
+            .toggle {
+                width: 30px;
+                height: 30px;
+                background: #4285f4;
+                border-radius: 50%;
+                cursor: pointer;
+                margin-left: 20px;
+            }
+            .search-box {
+                padding: 20px;
+                text-align: center;
+            }
+            .search-box input {
+                padding: 10px;
+                width: 250px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                font-size: 16px;
+                color: #ffffff;
+                background-color: #333333;
+            }
+            .contact {
+                list-style: none;
+                padding: 0;
+                display: flex;
+                justify-content: space-around;
+                margin-top: 20px;
+            }
+            .contact li {
+                flex: 1;
+                text-align: center;
+            }
+            .contact li a {
+                color: #4169E1; /* 统一用蓝色 */
+                text-decoration: none;
+            }
+            .contact .icon-box {
+                font-size: 20px; /* 增大图标 */
+                margin-bottom: 10px;
+            }
+            .contact p {
+                margin: 0;
+                font-size: 14px;
             }
         </style>
     </head>
@@ -76,17 +166,15 @@
                 <div class="toggle"></div>
             </div>
             <!-- Google 搜索框 -->
-            <div class="search-box" style="padding: 20px; text-align: center;">
+            <div class="search-box">
                 <form action="https://www.google.com/search" method="get" target="_blank">
                     <input 
                         type="text" 
                         name="q" 
                         placeholder="搜索网络..." 
-                        style="padding: 10px; width: 250px; border: 1px solid #ccc; border-radius: 5px; font-size: 16px; color: #ffffff; background-color: #333333;"
                     >
                     <button 
                         type="submit" 
-                        style="padding: 10px; background: #4285f4; color: white; border: none; border-radius: 5px; cursor: pointer; margin-left: 10px; width: 40px;"
                     >
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </button>
@@ -102,6 +190,7 @@
                 >
                 <button onclick="sendMessage()" class="chat-button">发送</button>
                 <div id="chatResponse" class="chat-response"></div>
+                <button class="bye-button">Bye bye!</button> <!-- 添加 Bye bye! 按钮 -->
             </div>
             <ul class="contact">
                 <li style="--cir: #c71610; --i: 0">
