@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>𝙙𝙤𝙥𝙖</title>
+    <title>小智</title>
     <link rel="stylesheet" href="./css/reset.css" />
     <link rel="stylesheet" href="./css/style.css" />
     <link
@@ -14,216 +14,88 @@
         referrerpolicy="no-referrer"
     />
     <style>
-        /* 主卡片样式保持不变 */
-        .card {
-            /* 你的原有卡片样式 */
-        }
+        /* 主卡片样式 */
+        .card { /* 你的原有卡片样式 */ }
         
-        /* 聊天助手样式 */
-        #xiaozhi-chat-button {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 70px;
-            height: 70px;
-            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 28px;
-            cursor: pointer;
-            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
-            z-index: 1000;
-            transition: all 0.3s ease;
-            border: none;
-            outline: none;
-            font-family: 'Segoe UI', sans-serif;
-            font-weight: bold;
+        /* Botpress 聊天样式 */
+        #bp-web-widget {
+            position: fixed !important;
+            bottom: 30px !important;
+            right: 30px !important;
+            z-index: 1000 !important;
         }
-        
-        #xiaozhi-chat-button:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 25px rgba(99, 102, 241, 0.6);
+        .bpw-floating-button {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%) !important;
+            border-radius: 50% !important;
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4) !important;
+            font-size: 28px !important;
+            width: 70px !important;
+            height: 70px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            color: white !important;
+            transition: transform 0.3s ease !important;
         }
-        
-        @keyframes xiaozhi-pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
+        .bpw-floating-button:hover {
+            transform: scale(1.1) !important;
+            box-shadow: 0 6px 25px rgba(99, 102, 241, 0.6) !important;
         }
-        
-        #xiaozhi-chat-button.pulse {
-            animation: xiaozhi-pulse 2s infinite;
+        .bpw-chat-container {
+            background: white !important;
+            border-radius: 16px !important;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15) !important;
+            font-family: 'Segoe UI', Roboto, sans-serif !important;
+            width: 380px !important;
+            height: 550px !important;
         }
-        
-        #xiaozhi-chat-container {
-            position: fixed;
-            bottom: 120px;
-            right: 30px;
-            width: 380px;
-            height: 550px;
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
-            display: none;
-            flex-direction: column;
-            z-index: 1000;
-            overflow: hidden;
-            font-family: 'Segoe UI', Roboto, sans-serif;
-            transition: all 0.3s ease;
+        .bpw-header {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%) !important;
+            color: white !important;
+            border-top-left-radius: 16px !important;
+            border-top-right-radius: 16px !important;
         }
-        
-        .xiaozhi-chat-header {
-            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-            color: white;
-            padding: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+        .bpw-from-user {
+            background: #6366f1 !important;
+            color: white !important;
+            border-bottom-right-radius: 4px !important;
         }
-        
-        .xiaozhi-chat-title {
-            font-weight: bold;
-            font-size: 18px;
+        .bpw-from-bot {
+            background: white !important;
+            color: #1f2937 !important;
+            border-bottom-left-radius: 4px !important;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
         }
-        
-        .xiaozhi-close-btn {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 20px;
-            cursor: pointer;
+        .bpw-composer input {
+            border: 1px solid #e5e7eb !important;
+            border-radius: 12px !important;
+            padding: 12px !important;
+            font-size: 15px !important;
         }
-        
-        .xiaozhi-chat-messages {
-            flex: 1;
-            padding: 20px;
-            overflow-y: auto;
-            background-color: #f9fafb;
+        .bpw-composer button {
+            background: #6366f1 !important;
+            color: white !important;
+            border-radius: 12px !important;
+            padding: 12px 20px !important;
+            font-size: 15px !important;
         }
-        
-        .xiaozhi-message {
-            margin-bottom: 15px;
-            max-width: 80%;
-            padding: 12px 16px;
-            border-radius: 18px;
-            line-height: 1.5;
-            font-size: 15px;
-            position: relative;
-            animation: message-appear 0.3s ease;
-        }
-        
-        @keyframes message-appear {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .xiaozhi-message.bot {
-            background: white;
-            color: #1f2937;
-            border-bottom-left-radius: 4px;
-            align-self: flex-start;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-        }
-        
-        .xiaozhi-message.user {
-            background: #6366f1;
-            color: white;
-            border-bottom-right-radius: 4px;
-            align-self: flex-end;
-            margin-left: auto;
-        }
-        
-        .xiaozhi-message .timestamp {
-            font-size: 12px;
-            color: #6b7280;
-            margin-top: 5px;
-            text-align: right;
-        }
-        
-        .xiaozhi-typing {
-            display: none;
-            padding: 12px 16px;
-            color: #6b7280;
-            font-style: italic;
-        }
-        
-        .xiaozhi-typing::after {
-            content: '正在输入...';
-            animation: typing 1.5s infinite;
-        }
-        
-        @keyframes typing {
-            0% { content: '正在输入.'; }
-            50% { content: '正在输入..'; }
-            100% { content: '正在输入...'; }
-        }
-        
-        .xiaozhi-chat-input-container {
-            padding: 15px;
-            border-top: 1px solid #e5e7eb;
-            background: white;
-            display: flex;
-            align-items: center;
-        }
-        
-        #xiaozhi-user-input {
-            flex: 1;
-            padding: 12px 15px;
-            border-radius: 12px;
-            border: 1px solid #e5e7eb;
-            outline: none;
-            font-size: 15px;
-            transition: border 0.3s;
-        }
-        
-        #xiaozhi-user-input:focus {
-            border-color: #6366f1;
-        }
-        
-        #xiaozhi-send-btn {
-            margin-left: 10px;
-            background: #6366f1;
-            color: white;
-            border: none;
-            border-radius: 12px;
-            padding: 12px 20px;
-            cursor: pointer;
-            transition: background 0.3s;
-            font-size: 15px;
-        }
-        
-        #xiaozhi-send-btn:hover {
-            background: #4f46e5;
-        }
-        
-        /* 响应式设计 */
         @media (max-width: 480px) {
-            #xiaozhi-chat-container {
-                width: 90%;
-                right: 5%;
-                bottom: 100px;
-                height: 60vh;
+            .bpw-chat-container {
+                width: 90% !important;
+                right: 5% !important;
+                bottom: 100px !important;
+                height: 60vh !important;
             }
-            
-            #xiaozhi-chat-button {
-                width: 60px;
-                height: 60px;
-                font-size: 24px;
-                bottom: 20px;
-                right: 20px;
+            .bpw-floating-button {
+                width: 60px !important;
+                height: 60px !important;
+                font-size: 24px !important;
+                bottom: 20px !important;
+                right: 20px !important;
             }
-            
-            #xiaozhi-user-input {
-                padding: 10px;
-                font-size: 14px;
-            }
-            
-            #xiaozhi-send-btn {
-                padding: 10px 15px;
-                font-size: 14px;
+            .bpw-composer input, .bpw-composer button {
+                font-size: 14px !important;
+                padding: 10px !important;
             }
         }
     </style>
@@ -262,143 +134,31 @@
         </ul>
     </div>
 
-    <!-- 小智 AI聊天助手 -->
-    <button id="xiaozhi-chat-button" class="pulse">智</button>
-    
-    <div id="xiaozhi-chat-container">
-        <div class="xiaozhi-chat-header">
-            <div class="xiaozhi-chat-title">小智 AI助手</div>
-            <button class="xiaozhi-close-btn">×</button>
-        </div>
-        <div class="xiaozhi-chat-messages" id="xiaozhi-chat-messages">
-            <div class="xiaozhi-message bot">
-                嗨！我是小智，你的贴心AI助手！😊 想聊点什么？可以问我关于这个网站、技术支持，或者随便聊聊哦！
-                <div class="timestamp"></div>
-            </div>
-        </div>
-        <div class="xiaozhi-chat-input-container">
-            <input type="text" id="xiaozhi-user-input" placeholder="输入你的问题或想聊的内容..." />
-            <button id="xiaozhi-send-btn">发送</button>
-        </div>
-    </div>
-
+    <!-- 小智 AI聊天助手（Botpress） -->
+    <script src="https://cdn.botpress.cloud/webchat/v1.js"></script>
     <script>
-        // 原始卡片切换功能
+        window.botpressWebChat.init({
+            composerPlaceholder: "问我任何问题！",
+            botId: "YOUR_BOT_ID", // 替换为你的 Botpress botId
+            hostUrl: "https://app.botpress.cloud",
+            messagingUrl: "https://messaging.botpress.cloud",
+            clientId: "YOUR_CLIENT_ID", // 替换为你的 Botpress clientId
+            botName: "小智",
+            botAvatar: "https://via.placeholder.com/40/007bff/ffffff?text=智",
+            enableReset: true,
+            showConversationsButton: true,
+            theme: "prism",
+            themeColor: "#6366f1"
+        });
+    </script>
+
+    <!-- 原始卡片切换功能 -->
+    <script>
         let toggle = document.querySelector('.toggle');
         let card = document.querySelector('.card');
         toggle.onclick = () => {
             card.classList.toggle('active');
         };
-
-        // 小智聊天功能
-        const chatButton = document.getElementById('xiaozhi-chat-button');
-        const chatContainer = document.getElementById('xiaozhi-chat-container');
-        const closeButton = document.querySelector('.xiaozhi-close-btn');
-        const chatMessages = document.getElementById('xiaozhi-chat-messages');
-        const userInput = document.getElementById('xiaozhi-user-input');
-        const sendButton = document.getElementById('xiaozhi-send-btn');
-
-        // 扩展的问答知识库
-        const knowledgeBase = {
-            "你好|嗨|hi|hello": "你好！我是小智，欢迎来到这个酷炫的网站！😊 有什么我可以帮你的？",
-            "你是谁|你是什么|小智是谁": "我是小智，你的AI助手，专门为这个网站提供支持！可以帮你解答问题、提供技术支持，或者随便聊聊~",
-            "技术支持|帮助|联系方式": "需要技术支持？可以通过以下方式联系：<br>- GitHub: <a href='https://github.com/95277l' target='_blank'>点击访问</a><br>- 私人Telegram: @dopasel<br>- 交流群组: @dopaselll",
-            "github|仓库": "我的GitHub仓库地址是：<a href='https://github.com/95277l' target='_blank'>点击访问</a>",
-            "telegram|联系": "你可以通过以下方式联系：<br>- 私人Telegram: @dopasel<br>- 交流群组: @dopaselll",
-            "网站做什么|这个网站是干嘛的": "这是一个展示编程、游戏开发和多媒体作品的个人网站！想了解更多？告诉我你感兴趣的部分！",
-            "谢谢|感谢": "不客气！随时为你效劳 😊",
-            "做什么|项目|作品": "这个网站的主人热衷于编程、游戏开发和多媒体创作！你可以问我具体项目详情哦！",
-            "学习|编程学习": "想学编程？建议从基础语言如 Python 或 JavaScript 开始！有什么具体的学习问题，我可以帮你解答！",
-            "默认": "嗯，我还在学习中，暂时没完全理解你的问题 😅 换个方式问问，或者聊点别的？"
-        };
-
-        // 切换聊天窗口显示
-        chatButton.addEventListener('click', () => {
-            chatContainer.style.display = chatContainer.style.display === 'flex' ? 'none' : 'flex';
-            chatButton.classList.remove('pulse');
-        });
-
-        closeButton.addEventListener('click', () => {
-            chatContainer.style.display = 'none';
-        });
-
-        // 添加消息到聊天窗口
-        function addMessage(text, sender) {
-            const messageElement = document.createElement('div');
-            messageElement.classList.add('xiaozhi-message', sender);
-            const timestamp = new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
-            messageElement.innerHTML = `${text}<div class="timestamp">${timestamp}</div>`;
-            chatMessages.appendChild(messageElement);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
-
-        // 显示“正在输入”动画
-        function showTypingIndicator() {
-            const typingElement = document.createElement('div');
-            typingElement.classList.add('xiaozhi-typing');
-            chatMessages.appendChild(typingElement);
-            typingElement.style.display = 'block';
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-            return typingElement;
-        }
-
-        // 移除“正在输入”动画
-        function removeTypingIndicator(typingElement) {
-            if (typingElement) {
-                typingElement.remove();
-            }
-        }
-
-        // 生成AI回复
-        function generateResponse(userMessage) {
-            const lowerCaseMsg = userMessage.toLowerCase();
-            for (const [keywords, response] of Object.entries(knowledgeBase)) {
-                const keywordArray = keywords.split('|');
-                if (keywordArray.some(keyword => lowerCaseMsg.includes(keyword.toLowerCase()))) {
-                    return response;
-                }
-            }
-            return knowledgeBase["默认"];
-        }
-
-        // 发送消息函数
-        function sendMessage() {
-            const message = userInput.value.trim();
-            if (message === '') {
-                userInput.placeholder = '请输入内容哦！';
-                return;
-            }
-
-            // 添加用户消息
-            addMessage(message, 'user');
-            userInput.value = '';
-
-            // 显示“正在输入”动画
-            const typingElement = showTypingIndicator();
-
-            // 模拟AI思考
-            setTimeout(() => {
-                removeTypingIndicator(typingElement);
-                const response = generateResponse(message);
-                addMessage(response, 'bot');
-            }, 1000);
-        }
-
-        // 发送消息事件监听
-        sendButton.addEventListener('click', sendMessage);
-        userInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                sendMessage();
-            }
-        });
-
-        // 初始显示脉冲动画
-        setTimeout(() => {
-            chatButton.classList.add('pulse');
-        }, 3000);
-
-        // 更新初始欢迎消息的时间戳
-        document.querySelector('.xiaozhi-message.bot .timestamp').textContent = new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
     </script>
 </body>
 </html>
