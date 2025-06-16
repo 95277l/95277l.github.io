@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>𝘥𝘰𝘱𝘢</title>
+    <title>𝙙𝙤𝙥𝙖</title>
     <link rel="stylesheet" href="./css/reset.css" />
     <link rel="stylesheet" href="./css/style.css" />
     <link
@@ -20,7 +20,7 @@
         }
         
         /* 聊天助手样式 */
-        #dopa-chat-button {
+        #xiaozhi-chat-button {
             position: fixed;
             bottom: 30px;
             right: 30px;
@@ -43,22 +43,22 @@
             font-weight: bold;
         }
         
-        #dopa-chat-button:hover {
+        #xiaozhi-chat-button:hover {
             transform: scale(1.1);
             box-shadow: 0 6px 25px rgba(99, 102, 241, 0.6);
         }
         
-        @keyframes dopa-pulse {
+        @keyframes xiaozhi-pulse {
             0% { transform: scale(1); }
             50% { transform: scale(1.05); }
             100% { transform: scale(1); }
         }
         
-        #dopa-chat-button.pulse {
-            animation: dopa-pulse 2s infinite;
+        #xiaozhi-chat-button.pulse {
+            animation: xiaozhi-pulse 2s infinite;
         }
         
-        #dopa-chat-container {
+        #xiaozhi-chat-container {
             position: fixed;
             bottom: 120px;
             right: 30px;
@@ -75,7 +75,7 @@
             transition: all 0.3s ease;
         }
         
-        .dopa-chat-header {
+        .xiaozhi-chat-header {
             background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
             color: white;
             padding: 18px;
@@ -84,12 +84,12 @@
             justify-content: space-between;
         }
         
-        .dopa-chat-title {
+        .xiaozhi-chat-title {
             font-weight: bold;
             font-size: 18px;
         }
         
-        .dopa-close-btn {
+        .xiaozhi-close-btn {
             background: none;
             border: none;
             color: white;
@@ -97,14 +97,14 @@
             cursor: pointer;
         }
         
-        .dopa-chat-messages {
+        .xiaozhi-chat-messages {
             flex: 1;
             padding: 20px;
             overflow-y: auto;
             background-color: #f9fafb;
         }
         
-        .dopa-message {
+        .xiaozhi-message {
             margin-bottom: 15px;
             max-width: 80%;
             padding: 12px 16px;
@@ -120,7 +120,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
         
-        .dopa-message.bot {
+        .xiaozhi-message.bot {
             background: white;
             color: #1f2937;
             border-bottom-left-radius: 4px;
@@ -128,7 +128,7 @@
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
         }
         
-        .dopa-message.user {
+        .xiaozhi-message.user {
             background: #6366f1;
             color: white;
             border-bottom-right-radius: 4px;
@@ -136,21 +136,21 @@
             margin-left: auto;
         }
         
-        .dopa-message .timestamp {
+        .xiaozhi-message .timestamp {
             font-size: 12px;
             color: #6b7280;
             margin-top: 5px;
             text-align: right;
         }
         
-        .dopa-typing {
+        .xiaozhi-typing {
             display: none;
             padding: 12px 16px;
             color: #6b7280;
             font-style: italic;
         }
         
-        .dopa-typing::after {
+        .xiaozhi-typing::after {
             content: '正在输入...';
             animation: typing 1.5s infinite;
         }
@@ -161,7 +161,7 @@
             100% { content: '正在输入...'; }
         }
         
-        .dopa-chat-input-container {
+        .xiaozhi-chat-input-container {
             padding: 15px;
             border-top: 1px solid #e5e7eb;
             background: white;
@@ -169,7 +169,7 @@
             align-items: center;
         }
         
-        #dopa-user-input {
+        #xiaozhi-user-input {
             flex: 1;
             padding: 12px 15px;
             border-radius: 12px;
@@ -179,11 +179,11 @@
             transition: border 0.3s;
         }
         
-        #dopa-user-input:focus {
+        #xiaozhi-user-input:focus {
             border-color: #6366f1;
         }
         
-        #dopa-send-btn {
+        #xiaozhi-send-btn {
             margin-left: 10px;
             background: #6366f1;
             color: white;
@@ -195,20 +195,20 @@
             font-size: 15px;
         }
         
-        #dopa-send-btn:hover {
+        #xiaozhi-send-btn:hover {
             background: #4f46e5;
         }
         
         /* 响应式设计 */
         @media (max-width: 480px) {
-            #dopa-chat-container {
+            #xiaozhi-chat-container {
                 width: 90%;
                 right: 5%;
                 bottom: 100px;
                 height: 60vh;
             }
             
-            #dopa-chat-button {
+            #xiaozhi-chat-button {
                 width: 60px;
                 height: 60px;
                 font-size: 24px;
@@ -216,12 +216,12 @@
                 right: 20px;
             }
             
-            #dopa-user-input {
+            #xiaozhi-user-input {
                 padding: 10px;
                 font-size: 14px;
             }
             
-            #dopa-send-btn {
+            #xiaozhi-send-btn {
                 padding: 10px 15px;
                 font-size: 14px;
             }
@@ -262,23 +262,23 @@
         </ul>
     </div>
 
-    <!-- 𝘥𝘰𝘱𝘢 AI聊天助手 -->
-    <button id="dopa-chat-button" class="pulse">𝘥</button>
+    <!-- 小智 AI聊天助手 -->
+    <button id="xiaozhi-chat-button" class="pulse">智</button>
     
-    <div id="dopa-chat-container">
-        <div class="dopa-chat-header">
-            <div class="dopa-chat-title">𝘥𝘰𝘱𝘢 AI助手</div>
-            <button class="dopa-close-btn">×</button>
+    <div id="xiaozhi-chat-container">
+        <div class="xiaozhi-chat-header">
+            <div class="xiaozhi-chat-title">小智 AI助手</div>
+            <button class="xiaozhi-close-btn">×</button>
         </div>
-        <div class="dopa-chat-messages" id="dopa-chat-messages">
-            <div class="dopa-message bot">
-                嗨！我是𝘥𝘰𝘱𝘢，你的贴心AI助手！😊 想聊点什么？可以问我关于这个网站、技术支持，或者随便聊聊哦！
+        <div class="xiaozhi-chat-messages" id="xiaozhi-chat-messages">
+            <div class="xiaozhi-message bot">
+                嗨！我是小智，你的贴心AI助手！😊 想聊点什么？可以问我关于这个网站、技术支持，或者随便聊聊哦！
                 <div class="timestamp"></div>
             </div>
         </div>
-        <div class="dopa-chat-input-container">
-            <input type="text" id="dopa-user-input" placeholder="输入你的问题或想聊的内容..." />
-            <button id="dopa-send-btn">发送</button>
+        <div class="xiaozhi-chat-input-container">
+            <input type="text" id="xiaozhi-user-input" placeholder="输入你的问题或想聊的内容..." />
+            <button id="xiaozhi-send-btn">发送</button>
         </div>
     </div>
 
@@ -290,18 +290,18 @@
             card.classList.toggle('active');
         };
 
-        // 𝘥𝘰𝘱𝘢聊天功能
-        const chatButton = document.getElementById('dopa-chat-button');
-        const chatContainer = document.getElementById('dopa-chat-container');
-        const closeButton = document.querySelector('.dopa-close-btn');
-        const chatMessages = document.getElementById('dopa-chat-messages');
-        const userInput = document.getElementById('dopa-user-input');
-        const sendButton = document.getElementById('dopa-send-btn');
+        // 小智聊天功能
+        const chatButton = document.getElementById('xiaozhi-chat-button');
+        const chatContainer = document.getElementById('xiaozhi-chat-container');
+        const closeButton = document.querySelector('.xiaozhi-close-btn');
+        const chatMessages = document.getElementById('xiaozhi-chat-messages');
+        const userInput = document.getElementById('xiaozhi-user-input');
+        const sendButton = document.getElementById('xiaozhi-send-btn');
 
         // 扩展的问答知识库
         const knowledgeBase = {
-            "你好|嗨|hi|hello": "你好！我是𝘥𝘰𝘱𝘢，欢迎来到这个酷炫的网站！😊 有什么我可以帮你的？",
-            "你是谁|你是什么|dopa是谁": "我是𝘥𝘰𝘱𝘢，你的AI助手，专门为这个网站提供支持！可以帮你解答问题、提供技术支持，或者随便聊聊~",
+            "你好|嗨|hi|hello": "你好！我是小智，欢迎来到这个酷炫的网站！😊 有什么我可以帮你的？",
+            "你是谁|你是什么|小智是谁": "我是小智，你的AI助手，专门为这个网站提供支持！可以帮你解答问题、提供技术支持，或者随便聊聊~",
             "技术支持|帮助|联系方式": "需要技术支持？可以通过以下方式联系：<br>- GitHub: <a href='https://github.com/95277l' target='_blank'>点击访问</a><br>- 私人Telegram: @dopasel<br>- 交流群组: @dopaselll",
             "github|仓库": "我的GitHub仓库地址是：<a href='https://github.com/95277l' target='_blank'>点击访问</a>",
             "telegram|联系": "你可以通过以下方式联系：<br>- 私人Telegram: @dopasel<br>- 交流群组: @dopaselll",
@@ -325,7 +325,7 @@
         // 添加消息到聊天窗口
         function addMessage(text, sender) {
             const messageElement = document.createElement('div');
-            messageElement.classList.add('dopa-message', sender);
+            messageElement.classList.add('xiaozhi-message', sender);
             const timestamp = new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
             messageElement.innerHTML = `${text}<div class="timestamp">${timestamp}</div>`;
             chatMessages.appendChild(messageElement);
@@ -335,7 +335,7 @@
         // 显示“正在输入”动画
         function showTypingIndicator() {
             const typingElement = document.createElement('div');
-            typingElement.classList.add('dopa-typing');
+            typingElement.classList.add('xiaozhi-typing');
             chatMessages.appendChild(typingElement);
             typingElement.style.display = 'block';
             chatMessages.scrollTop = chatMessages.scrollHeight;
@@ -398,7 +398,7 @@
         }, 3000);
 
         // 更新初始欢迎消息的时间戳
-        document.querySelector('.dopa-message.bot .timestamp').textContent = new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
+        document.querySelector('.xiaozhi-message.bot .timestamp').textContent = new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
     </script>
 </body>
 </html>
