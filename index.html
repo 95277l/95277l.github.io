@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>dopa - 个人网站</title>
+    <title>dopa - 个人网站 | GPT-3.5 AI助手</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
-        /* 基础样式重置 */
+        /* 基础样式 */
         * {
             margin: 0;
             padding: 0;
@@ -18,30 +18,40 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background: linear-gradient(to right, rgb(189, 195, 199), rgb(44, 62, 80));
-            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
-            color: #333;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            color: #f0f0f0;
             padding: 20px;
+            overflow-x: hidden;
+        }
+        
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
         
         /* 卡片样式 */
         .card {
             position: relative;
             width: 100%;
-            max-width: 420px;
-            background: rgba(255, 255, 255, 0.95);
+            max-width: 480px;
+            background: rgba(25, 30, 45, 0.9);
             border-radius: 24px;
             padding: 30px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
             text-align: center;
             transition: all 0.4s ease;
             backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             z-index: 2;
         }
         
         .card.active {
             transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
         }
         
         .user {
@@ -52,12 +62,32 @@
         }
         
         .img-box {
-            width: 120px;
-            height: 120px;
+            width: 140px;
+            height: 140px;
             border-radius: 50%;
             overflow: hidden;
-            border: 4px solid #f97316;
-            margin-bottom: 20px;
+            border: 4px solid #4cc9f0;
+            margin-bottom: 25px;
+            box-shadow: 0 0 20px rgba(76, 201, 240, 0.4);
+            position: relative;
+        }
+        
+        .img-box::before {
+            content: "";
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #4cc9f0, #f72585, #4361ee);
+            z-index: -1;
+            animation: rotateBorder 3s linear infinite;
+        }
+        
+        @keyframes rotateBorder {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
         
         .img-box img {
@@ -67,17 +97,19 @@
         }
         
         .content h2 {
-            color: #333;
-            font-size: 28px;
-            font-weight: 600;
-            margin-bottom: 8px;
+            color: #fff;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
         }
         
         .content h1 {
-            color: #6b7280;
+            color: #a0a0c0;
             font-size: 18px;
-            font-weight: 500;
-            margin-bottom: 20px;
+            font-weight: 400;
+            margin-bottom: 25px;
+            letter-spacing: 1px;
         }
         
         .toggle {
@@ -87,36 +119,25 @@
             transform: translateX(-50%);
             width: 44px;
             height: 44px;
-            background: linear-gradient(135deg, #6b7280, #f97316);
+            background: linear-gradient(135deg, #4361ee, #f72585);
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
             transition: all 0.3s ease;
+            z-index: 3;
         }
         
-        .toggle::before {
-            content: "";
-            position: absolute;
-            width: 20px;
-            height: 2px;
-            background: white;
-            transform: rotate(90deg);
-            transition: 0.5s;
+        .toggle i {
+            color: white;
+            font-size: 20px;
+            transition: transform 0.3s ease;
         }
         
-        .toggle::after {
-            content: "";
-            position: absolute;
-            width: 20px;
-            height: 2px;
-            background: white;
-        }
-        
-        .card.active .toggle::before {
-            transform: rotate(180deg);
+        .card.active .toggle i {
+            transform: rotate(45deg);
         }
         
         .contact {
@@ -136,7 +157,7 @@
             transform: translateX(-50%);
             width: 80%;
             height: 1px;
-            background: rgba(0, 0, 0, 0.1);
+            background: linear-gradient(to right, transparent, rgba(76, 201, 240, 0.5), transparent);
         }
         
         .contact li {
@@ -145,31 +166,39 @@
         
         .contact li a {
             text-decoration: none;
-            color: #555;
+            color: #c0c0e0;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             transition: 0.3s;
         }
         
         .contact li a:hover {
             transform: translateY(-5px);
-            color: #f97316;
+            color: #4cc9f0;
         }
         
         .icon-box {
             position: relative;
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, var(--cir), #fff);
+            width: 60px;
+            height: 60px;
+            background: rgba(30, 35, 60, 0.7);
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 22px;
-            color: white;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            font-size: 24px;
+            color: #4cc9f0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(76, 201, 240, 0.3);
+        }
+        
+        .contact li a:hover .icon-box {
+            background: rgba(76, 201, 240, 0.2);
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(76, 201, 240, 0.4);
         }
         
         .contact li a p {
@@ -177,56 +206,63 @@
             font-weight: 500;
         }
         
-        /* 聊天机器人样式 */
+        /* 聊天机器人样式 - GPT-3.5主题 */
         .chatbot-container {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 360px;
+            bottom: 30px;
+            right: 30px;
+            width: 380px;
             max-height: 70vh;
-            background-color: #ffffff;
-            border-radius: 16px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            background: rgba(25, 30, 45, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
             overflow: hidden;
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
             z-index: 1000;
             display: flex;
             flex-direction: column;
             font-family: 'Segoe UI', sans-serif;
-            animation: fadeIn 0.5s ease;
-            border: 1px solid rgba(0, 0, 0, 0.08);
+            animation: floatIn 0.8s cubic-bezier(0.22, 0.61, 0.36, 1);
+            border: 1px solid rgba(76, 201, 240, 0.3);
+            backdrop-filter: blur(10px);
         }
         
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        @keyframes floatIn {
+            from { opacity: 0; transform: translateY(30px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
         
         .chatbot-hidden {
-            transform: translateY(calc(100% - 60px));
-            opacity: 0.8;
+            transform: translateY(calc(100% - 70px));
+            opacity: 0.5;
         }
         
         .chatbot-header {
-            background: linear-gradient(135deg, #6b7280, #f97316);
+            background: linear-gradient(90deg, #4361ee, #3a0ca3);
             color: white;
-            padding: 12px 16px;
-            font-size: 18px;
+            padding: 16px 20px;
+            font-size: 20px;
             font-weight: 600;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border-bottom: 1px solid rgba(76, 201, 240, 0.2);
+        }
+        
+        .chatbot-header span i {
+            margin-right: 10px;
+            color: #4cc9f0;
         }
         
         .chatbot-header button {
-            background: none;
+            background: rgba(255, 255, 255, 0.15);
             border: none;
             color: white;
-            font-size: 20px;
+            font-size: 24px;
             cursor: pointer;
-            transition: transform 0.2s;
-            width: 30px;
-            height: 30px;
+            transition: all 0.3s ease;
+            width: 36px;
+            height: 36px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -234,101 +270,143 @@
         }
         
         .chatbot-header button:hover {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.25);
+            transform: rotate(90deg);
         }
         
         .chatbot-messages {
             flex-grow: 1;
-            padding: 16px;
+            padding: 20px;
             overflow-y: auto;
-            background-color: #f9fafb;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 15px;
+            background: rgba(20, 25, 40, 0.6);
+        }
+        
+        /* 自定义滚动条 */
+        .chatbot-messages::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .chatbot-messages::-webkit-scrollbar-track {
+            background: rgba(30, 35, 50, 0.5);
+            border-radius: 4px;
+        }
+        
+        .chatbot-messages::-webkit-scrollbar-thumb {
+            background: linear-gradient(#4361ee, #4cc9f0);
+            border-radius: 4px;
         }
         
         .chatbot-messages .message {
-            padding: 10px 14px;
-            border-radius: 12px;
+            padding: 14px 18px;
+            border-radius: 18px;
             max-width: 85%;
             line-height: 1.5;
-            font-size: 14px;
+            font-size: 15px;
             position: relative;
-            animation: messageAppear 0.3s ease;
+            animation: messageAppear 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
         
         @keyframes messageAppear {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(15px); }
             to { opacity: 1; transform: translateY(0); }
         }
         
         .chatbot-messages .user-message {
-            background-color: #fef3c7;
+            background: linear-gradient(135deg, #3a0ca3, #4361ee);
             margin-left: auto;
-            border: 1px solid #f97316;
-            border-bottom-right-radius: 4px;
+            border-bottom-right-radius: 5px;
+            color: white;
         }
         
         .chatbot-messages .bot-message {
-            background-color: #e0f2fe;
+            background: rgba(30, 35, 50, 0.8);
             margin-right: auto;
-            border: 1px solid #60a5fa;
-            border-bottom-left-radius: 4px;
+            border-bottom-left-radius: 5px;
+            color: #e0e0ff;
+            border: 1px solid rgba(76, 201, 240, 0.2);
         }
         
         .chatbot-messages .timestamp {
-            font-size: 10px;
-            color: #6b7280;
-            margin-top: 4px;
+            font-size: 11px;
+            color: #8a8ab5;
+            margin-top: 8px;
             text-align: right;
+            opacity: 0.8;
         }
         
         .chatbot-messages .bot-message .timestamp {
             text-align: left;
         }
         
+        .chatbot-messages .gpt-label {
+            font-size: 12px;
+            color: #4cc9f0;
+            margin-bottom: 5px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+        
+        .chatbot-messages .gpt-label i {
+            margin-right: 5px;
+        }
+        
         .chatbot-input {
             display: flex;
-            padding: 12px;
-            background-color: #ffffff;
-            border-top: 1px solid #e5e7eb;
+            padding: 16px;
+            background: rgba(25, 30, 45, 0.9);
+            border-top: 1px solid rgba(76, 201, 240, 0.2);
         }
         
         .chatbot-input input {
             flex-grow: 1;
-            padding: 10px 15px;
-            border: 1px solid #d1d5db;
-            border-radius: 24px;
-            font-size: 14px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 25px;
+            font-size: 15px;
             outline: none;
-            transition: border-color 0.2s;
-            background: #f9fafb;
+            transition: all 0.3s ease;
+            background: rgba(30, 35, 50, 0.8);
+            color: #e0e0ff;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .chatbot-input input::placeholder {
+            color: #8a8ab5;
         }
         
         .chatbot-input input:focus {
-            border-color: #f97316;
-            box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.2);
+            box-shadow: inset 0 0 15px rgba(76, 201, 240, 0.4), 0 0 15px rgba(76, 201, 240, 0.3);
         }
         
         .chatbot-input button {
-            margin-left: 8px;
-            padding: 10px 20px;
-            background-color: #f97316;
+            margin-left: 12px;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #4361ee, #3a0ca3);
             color: white;
             border: none;
-            border-radius: 24px;
+            border-radius: 25px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 15px;
             font-weight: 600;
-            transition: background-color 0.2s, transform 0.1s;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         
         .chatbot-input button:hover {
-            background-color: #ea580c;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(67, 97, 238, 0.4);
         }
         
         .chatbot-input button:active {
-            transform: scale(0.96);
+            transform: translateY(0);
         }
         
         /* 思考中动画 */
@@ -338,12 +416,18 @@
             padding: 8px;
         }
         
+        .thinking-text {
+            color: #8a8ab5;
+            margin-right: 10px;
+            font-size: 14px;
+        }
+        
         .thinking-dot {
-            width: 8px;
-            height: 8px;
+            width: 10px;
+            height: 10px;
             border-radius: 50%;
-            background-color: #60a5fa;
-            margin: 0 3px;
+            background-color: #4cc9f0;
+            margin: 0 4px;
             animation: pulse 1.5s infinite ease-in-out;
         }
         
@@ -357,37 +441,47 @@
         
         @keyframes pulse {
             0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.2); opacity: 0.7; }
+            50% { transform: scale(1.3); opacity: 0.7; }
         }
         
         /* 错误消息样式 */
         .error-message {
-            color: #e53935;
-            font-size: 12px;
-            margin-top: 4px;
+            color: #ff6b6b;
+            font-size: 13px;
+            margin-top: 5px;
         }
         
         /* 移动端适配 */
-        @media (max-width: 480px) {
+        @media (max-width: 600px) {
             .card {
                 max-width: 100%;
                 padding: 20px;
             }
             
             .chatbot-container {
-                width: 90vw;
-                bottom: 10px;
-                right: 10px;
+                width: 92vw;
+                bottom: 15px;
+                right: 15px;
                 max-height: 60vh;
             }
             
             .contact {
                 grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .img-box {
+                width: 120px;
+                height: 120px;
+            }
+            
+            .content h2 {
+                font-size: 26px;
             }
         }
         
-        /* 背景装饰 */
-        .background-deco {
+        /* 科技粒子背景 */
+        .particles {
             position: fixed;
             top: 0;
             left: 0;
@@ -397,83 +491,81 @@
             overflow: hidden;
         }
         
-        .deco-circle {
+        .particle {
             position: absolute;
+            background: rgba(76, 201, 240, 0.3);
             border-radius: 50%;
-            background: radial-gradient(circle, rgba(249,115,22,0.15) 0%, rgba(249,115,22,0) 70%);
+            pointer-events: none;
         }
         
-        .deco-circle:nth-child(1) {
-            width: 300px;
-            height: 300px;
-            top: -100px;
-            left: -100px;
-        }
-        
-        .deco-circle:nth-child(2) {
-            width: 200px;
-            height: 200px;
-            bottom: -50px;
-            right: -50px;
+        /* 响应式调整 */
+        @media (max-height: 700px) {
+            .card {
+                transform: scale(0.9);
+            }
+            
+            .card.active {
+                transform: scale(0.9) translateY(-10px);
+            }
         }
     </style>
 </head>
 <body>
-    <!-- 背景装饰 -->
-    <div class="background-deco">
-        <div class="deco-circle"></div>
-        <div class="deco-circle"></div>
-    </div>
+    <!-- 科技粒子背景 -->
+    <div class="particles" id="particles"></div>
     
     <!-- 卡片内容 -->
     <div class="card">
         <div class="user">
             <div class="img-box">
-                <img src="https://avatars.githubusercontent.com/u/50571734?s=100&u=82d49ceecfc580df6eb42a17ce8dc6fd4a01b356&v=4" alt="用户头像">
+                <img src="https://avatars.githubusercontent.com/u/50571734?s=400&u=82d49ceecfc580df6eb42a17ce8dc6fd4a01b356&v=4" alt="用户头像">
             </div>
             <div class="content">
                 <h2>永远保持一颗学习的心</h2>
                 <h1>Always keep a heart of learning</h1>
             </div>
-            <div class="toggle"></div>
+            <div class="toggle">
+                <i class="fas fa-plus"></i>
+            </div>
         </div>
         <ul class="contact">
-            <li style="--cir: #c71610;">
+            <li>
                 <a href="https://github.com/95277l" target="_blank">
                     <div class="icon-box"><i class="fa-brands fa-github"></i></div>
                     <p>GitHub仓库地址</p>
                 </a>
             </li>
-            <li style="--cir: #171515;">
+            <li>
                 <a href="https://t.me/dopasel" target="_blank">
                     <div class="icon-box"><i class="fa-brands fa-telegram"></i></div>
                     <p>私人Telegram</p>
                 </a>
             </li>
-            <li style="--cir: #0a66c2;">
+            <li>
                 <a href="https://t.me/dopaselll" target="_blank">
-                    <div class="icon-box"><i class="fa-solid fa-user"></i></div>
+                    <div class="icon-box"><i class="fa-solid fa-user-group"></i></div>
                     <p>交流群组</p>
                 </a>
             </li>
         </ul>
     </div>
     
-    <!-- 聊天机器人容器 -->
+    <!-- GPT-3.5 聊天机器人容器 -->
     <div class="chatbot-container" id="chatbot">
         <div class="chatbot-header">
-            <span><i class="fa-solid fa-robot"></i> AI 助手</span>
+            <span><i class="fas fa-robot"></i> GPT-3.5 AI 助手</span>
             <button onclick="toggleChatbot()">−</button>
         </div>
         <div class="chatbot-messages" id="chatMessages">
             <div class="message bot-message">
-                你好！我是你的 AI 助手，可以陪你聊天、回答问题或提供技术支持。今天有什么可以帮你的？
+                <div class="gpt-label"><i class="fas fa-microchip"></i> GPT-3.5 Turbo</div>
+                您好！我是基于GPT-3.5架构的AI助手，可以回答技术问题、提供编程帮助或陪您聊天。请问有什么可以帮您的？
                 <div class="timestamp"></div>
             </div>
         </div>
         <div class="chatbot-input">
-            <input type="text" id="userInput" placeholder="输入你的消息..." autofocus>
-            <button onclick="sendMessage()"><i class="fa-solid fa-paper-plane"></i> 发送</button>
+            <input type="text" id="userInput" placeholder="输入消息...">
+            <button onclick="sendMessage()"><i class="fas fa-paper-plane"></i> 发送</button>
         </div>
     </div>
     
@@ -489,23 +581,13 @@
         let conversationHistory = [
             {
                 role: 'system',
-                content: '你是一个友好、温暖、懂科技的 AI 助手，运行在一个个人网站上。支持日常闲聊、回答访客问题并提供技术支持，语气清晰且亲切。'
+                content: '你是一个基于GPT-3.5架构的AI助手，部署在个人网站上。你拥有强大的自然语言处理能力，能够回答技术问题、提供编程帮助、解释复杂概念，并以友好专业的语气与用户交流。'
             },
             {
                 role: 'assistant',
-                content: '你好！我是你的 AI 助手，可以陪你聊天、回答问题或提供技术支持。今天有什么可以帮你的？'
+                content: '您好！我是基于GPT-3.5架构的AI助手，可以回答技术问题、提供编程帮助或陪您聊天。请问有什么可以帮您的？'
             }
         ];
-        
-        // 免费AI API端点列表（多个备选）
-        const FREE_AI_APIS = [
-            'https://free.churchless.tech/v1/chat/completions',
-            'https://api-free.deeplx.org/v1/chat/completions',
-            'https://api.openai-proxy.org/v1/chat/completions'
-        ];
-        
-        // 当前使用的API索引
-        let currentApiIndex = 0;
         
         // 切换聊天窗口显示/隐藏
         function toggleChatbot() {
@@ -529,7 +611,9 @@
             thinkingDiv.className = 'message bot-message';
             thinkingDiv.id = 'thinking-indicator';
             thinkingDiv.innerHTML = `
+                <div class="gpt-label"><i class="fas fa-brain"></i> 思考中</div>
                 <div class="thinking-indicator">
+                    <span class="thinking-text">GPT-3.5正在处理</span>
                     <div class="thinking-dot"></div>
                     <div class="thinking-dot"></div>
                     <div class="thinking-dot"></div>
@@ -559,10 +643,10 @@
             conversationHistory.push({ role: 'user', content: userMessage });
             
             // 限制对话历史长度
-            if (conversationHistory.length > 15) {
+            if (conversationHistory.length > 16) {
                 conversationHistory = [
                     conversationHistory[0],
-                    ...conversationHistory.slice(-14)
+                    ...conversationHistory.slice(-15)
                 ];
             }
             
@@ -576,24 +660,20 @@
             const thinkingIndicator = addThinkingIndicator();
             
             try {
-                // 尝试当前API
-                const apiUrl = FREE_AI_APIS[currentApiIndex];
-                const response = await fetch(apiUrl, {
+                const response = await fetch('https://gpt-backend.vercel.app/api/chat', { // 替换为你的 Vercel 域名
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        model: "gpt-3.5-turbo",
                         messages: conversationHistory,
                         temperature: 0.7,
-                        max_tokens: 1000
+                        max_tokens: 1200
                     })
                 });
                 
                 if (!response.ok) {
-                    // 如果当前API失败，切换到下一个
-                    throw new Error(`API ${currentApiIndex+1} 请求失败`);
+                    throw new Error(`API请求失败 (${response.status})`);
                 }
                 
                 const data = await response.json();
@@ -608,7 +688,11 @@
                 // 添加机器人回复
                 const botMsgDiv = document.createElement('div');
                 botMsgDiv.className = 'message bot-message';
-                botMsgDiv.innerHTML = `${botMessage}<div class="timestamp">${getTimestamp()}</div>`;
+                botMsgDiv.innerHTML = `
+                    <div class="gpt-label"><i class="fas fa-microchip"></i> GPT-3.5 Turbo</div>
+                    ${botMessage}
+                    <div class="timestamp">${getTimestamp()}</div>
+                `;
                 messagesDiv.appendChild(botMsgDiv);
                 
                 // 滚动到底部
@@ -621,33 +705,18 @@
                     messagesDiv.removeChild(thinkingIndicator);
                 }
                 
-                // 切换到下一个API
-                currentApiIndex = (currentApiIndex + 1) % FREE_AI_APIS.length;
-                
-                // 添加错误消息
                 const errorMsgDiv = document.createElement('div');
                 errorMsgDiv.className = 'message bot-message';
                 errorMsgDiv.innerHTML = `
-                    <div>正在尝试备用API (${currentApiIndex+1}/${FREE_AI_APIS.length})</div>
-                    <div class="error-message">原因: ${error.message}</div>
+                    <div class="gpt-label"><i class="fas fa-exclamation-triangle"></i> 连接问题</div>
+                    <div>抱歉，出现了错误，请稍后再试。</div>
+                    <div class="error-message">错误: ${error.message}</div>
                     <div class="timestamp">${getTimestamp()}</div>
                 `;
                 messagesDiv.appendChild(errorMsgDiv);
                 
                 // 滚动到底部
                 messagesDiv.scrollTop = messagesDiv.scrollHeight;
-                
-                // 重试请求
-                setTimeout(() => {
-                    const retryMsgDiv = document.createElement('div');
-                    retryMsgDiv.className = 'message bot-message';
-                    retryMsgDiv.innerHTML = `<div>正在重新尝试获取回复...</div><div class="timestamp">${getTimestamp()}</div>`;
-                    messagesDiv.appendChild(retryMsgDiv);
-                    messagesDiv.scrollTop = messagesDiv.scrollHeight;
-                    
-                    // 再次发送请求
-                    sendMessage();
-                }, 1000);
             }
         }
         
@@ -657,17 +726,65 @@
         });
         
         // 初始化时间戳
-        document.querySelector('.bot-message .timestamp').textContent = getTimestamp();
+        document.querySelector('.timestamp').textContent = getTimestamp();
         
-        // 初始提示
-        setTimeout(() => {
-            const messagesDiv = document.getElementById('chatMessages');
-            const welcomeMsg = document.createElement('div');
-            welcomeMsg.className = 'message bot-message';
-            welcomeMsg.innerHTML = `我是免费AI助手，随时为您服务！<div class="timestamp">${getTimestamp()}</div>`;
-            messagesDiv.appendChild(welcomeMsg);
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
-        }, 2000);
+        // 粒子背景效果
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // 随机属性
+                const size = Math.random() * 5 + 1;
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+                const delay = Math.random() * 5;
+                const duration = Math.random() * 10 + 10;
+                
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${posX}%`;
+                particle.style.top = `${posY}%`;
+                particle.style.animation = `float ${duration}s infinite ${delay}s`;
+                particle.style.opacity = Math.random() * 0.4 + 0.1;
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+        
+        // 添加漂浮动画
+        const styleSheet = document.styleSheets[0];
+        styleSheet.insertRule(`
+            @keyframes float {
+                0% { transform: translate(0, 0) rotate(0deg); }
+                25% { transform: translate(${Math.random() * 50 - 25}px, ${Math.random() * 50 - 25}px) rotate(${Math.random() * 90 - 45}deg); }
+                50% { transform: translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px) rotate(${Math.random() * 180 - 90}deg); }
+                75% { transform: translate(${Math.random() * 50 - 25}px, ${Math.random() * 50 - 25}px) rotate(${Math.random() * 270 - 135}deg); }
+                100% { transform: translate(0, 0) rotate(360deg); }
+            }
+        `, styleSheet.cssRules.length);
+        
+        // 初始化
+        window.onload = function() {
+            createParticles();
+            
+            // 初始提示
+            setTimeout(() => {
+                const messagesDiv = document.getElementById('chatMessages');
+                const welcomeMsg = document.createElement('div');
+                welcomeMsg.className = 'message bot-message';
+                welcomeMsg.innerHTML = `
+                    <div class="gpt-label"><i class="fas fa-lightbulb"></i> 提示</div>
+                    您可以问我任何问题，我会尽力提供准确、详细的回答！
+                    <div class="timestamp">${getTimestamp()}</div>
+                `;
+                messagesDiv.appendChild(welcomeMsg);
+                messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            }, 3000);
+        };
     </script>
 </body>
 </html>
