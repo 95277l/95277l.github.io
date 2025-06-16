@@ -217,9 +217,6 @@
                 card.classList.toggle('active')
             }
 
-            // OpenAI API 密钥
-            const OPENAI_API_KEY = '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';
-
             // 存储对话历史
             let conversationHistory = [
               {
@@ -273,18 +270,15 @@
               // 滚动到底部
               messagesDiv.scrollTop = messagesDiv.scrollHeight;
 
-              // 调用 OpenAI API
+              // 调用 Vercel 后端代理
               try {
-                const response = await fetch('https://api.openai.com/v1/chat/completions', {
+                const response = await fetch('https://chatbot-backend.vercel.app/api/chat', { // 替换为你的 Vercel 域名
                   method: 'POST',
                   headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${OPENAI_API_KEY}`,
                   },
                   body: JSON.stringify({
-                    model: 'gpt-3.5-turbo',
                     messages: conversationHistory,
-                    max_tokens: 500
                   }),
                 });
 
