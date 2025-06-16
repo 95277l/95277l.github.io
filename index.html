@@ -13,52 +13,181 @@
         crossorigin="anonymous"
         referrerpolicy="no-referrer"
     />
-    <!-- 将样式提前到head中 -->
     <style>
-        /* 自定义聊天窗口样式 */
-        flowise-embed {
-            --chat-bubble-size: 60px;
-            --chat-bubble-icon-size: 30px;
+        /* 主卡片样式保持不变 */
+        .card {
+            /* 你的原有卡片样式 */
         }
         
-        /* 添加动画效果 */
+        /* 新增聊天助手样式 */
+        #dopa-chat-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 28px;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
+            z-index: 1000;
+            transition: all 0.3s ease;
+            border: none;
+            outline: none;
+            font-family: 'Segoe UI', sans-serif;
+            font-weight: bold;
+        }
+        
+        #dopa-chat-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 25px rgba(99, 102, 241, 0.6);
+        }
+        
         @keyframes dopa-pulse {
             0% { transform: scale(1); }
             50% { transform: scale(1.05); }
             100% { transform: scale(1); }
         }
         
-        flowise-embed::part(chat-bubble) {
+        #dopa-chat-button.pulse {
             animation: dopa-pulse 2s infinite;
-            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
-            border-radius: 50%;
         }
         
-        flowise-embed::part(chat-container) {
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+        #dopa-chat-container {
+            position: fixed;
+            bottom: 120px;
+            right: 30px;
+            width: 380px;
+            height: 550px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+            display: none;
+            flex-direction: column;
+            z-index: 1000;
+            overflow: hidden;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            transition: all 0.3s ease;
         }
         
-        flowise-embed::part(chat-header) {
+        .dopa-chat-header {
             background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-            border-top-left-radius: 12px;
-            border-top-right-radius: 12px;
+            color: white;
+            padding: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
         
-        flowise-embed::part(chat-message-bot) {
-            border-radius: 18px 18px 18px 4px;
-            margin-right: 20px;
+        .dopa-chat-title {
+            font-weight: bold;
+            font-size: 18px;
         }
         
-        flowise-embed::part(chat-message-user) {
-            border-radius: 18px 18px 4px 18px;
-            margin-left: 20px;
+        .dopa-close-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
         }
         
-        flowise-embed::part(chat-input) {
+        .dopa-chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background-color: #f9fafb;
+        }
+        
+        .dopa-message {
+            margin-bottom: 15px;
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            line-height: 1.5;
+            font-size: 15px;
+            position: relative;
+            animation: message-appear 0.3s ease;
+        }
+        
+        @keyframes message-appear {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .dopa-message.bot {
+            background: white;
+            color: #1f2937;
+            border-bottom-left-radius: 4px;
+            align-self: flex-start;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+        
+        .dopa-message.user {
+            background: #6366f1;
+            color: white;
+            border-bottom-right-radius: 4px;
+            align-self: flex-end;
+            margin-left: auto;
+        }
+        
+        .dopa-chat-input-container {
+            padding: 15px;
+            border-top: 1px solid #e5e7eb;
+            background: white;
+            display: flex;
+        }
+        
+        #dopa-user-input {
+            flex: 1;
+            padding: 12px 15px;
             border-radius: 12px;
             border: 1px solid #e5e7eb;
+            outline: none;
+            font-size: 15px;
+            transition: border 0.3s;
+        }
+        
+        #dopa-user-input:focus {
+            border-color: #6366f1;
+        }
+        
+        #dopa-send-btn {
+            margin-left: 10px;
+            background: #6366f1;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 0 20px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        #dopa-send-btn:hover {
+            background: #4f46e5;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 480px) {
+            #dopa-chat-container {
+                width: 90%;
+                right: 5%;
+                bottom: 100px;
+                height: 60vh;
+            }
+            
+            #dopa-chat-button {
+                width: 60px;
+                height: 60px;
+                font-size: 24px;
+                bottom: 20px;
+                right: 20px;
+            }
         }
     </style>
 </head>
@@ -96,35 +225,112 @@
         </ul>
     </div>
 
-    <!-- 添加dopa AI聊天助手 -->
-    <script src="https://cdn.jsdelivr.net/npm/flowise-embed/dist/web.js"></script>
-    <flowise-embed
-        chatflowid="a4a9c0f6-7b08-4b2b-9e9e-0a1e2b3c4d5e"
-        apiHost="https://flowiseai.onrender.com"
-        chatTitle="𝘥𝘰𝘱𝘢"
-        welcomeMessage="你好呀！我是𝘥𝘰𝘱𝘢，你的AI助手~有什么我可以帮你的吗？"
-        backgroundColor="#f5f7fa"
-        textColor="#1f2937"
-        buttonBackgroundColor="#6366f1"
-        buttonTextColor="#ffffff"
-        buttonSize="large"
-        buttonPosition="right"
-        poweredByTextColor="#9ca3af"
-        sendButtonColor="#6366f1"
-        userMessageBackground="#6366f1"
-        userMessageTextColor="#ffffff"
-        botMessageBackground="#ffffff"
-        botMessageTextColor="#1f2937"
-        fontSize="16px"
-        chatIcon="https://cdn-icons-png.flaticon.com/512/4712/4712035.png"
-    ></flowise-embed>
+    <!-- 𝘥𝘰𝘱𝘢 AI聊天助手 -->
+    <button id="dopa-chat-button" class="pulse">𝘥</button>
+    
+    <div id="dopa-chat-container">
+        <div class="dopa-chat-header">
+            <div class="dopa-chat-title">𝘥𝘰𝘱𝘢 AI助手</div>
+            <button class="dopa-close-btn">&times;</button>
+        </div>
+        <div class="dopa-chat-messages" id="dopa-chat-messages">
+            <div class="dopa-message bot">你好呀！我是𝘥𝘰𝘱𝘢，你的AI助手~有什么我可以帮你的吗？</div>
+        </div>
+        <div class="dopa-chat-input-container">
+            <input type="text" id="dopa-user-input" placeholder="输入你的问题..." />
+            <button id="dopa-send-btn">发送</button>
+        </div>
+    </div>
 
     <script>
+        // 原始卡片切换功能
         let toggle = document.querySelector('.toggle')
         let card = document.querySelector('.card')
         toggle.onclick = () => {
             card.classList.toggle('active')
         }
+
+        // 𝘥𝘰𝘱𝘢聊天功能
+        const chatButton = document.getElementById('dopa-chat-button');
+        const chatContainer = document.getElementById('dopa-chat-container');
+        const closeButton = document.querySelector('.dopa-close-btn');
+        const chatMessages = document.getElementById('dopa-chat-messages');
+        const userInput = document.getElementById('dopa-user-input');
+        const sendButton = document.getElementById('dopa-send-btn');
+        
+        // 预定义的问答知识库
+        const knowledgeBase = {
+            "你好": "你好！我是𝘥𝘰𝘱𝘢，很高兴为你服务！",
+            "你是谁": "我是你的AI助手𝘥𝘰𝘱𝘢，可以帮助你解答问题和提供技术支持~",
+            "技术支持": "你可以通过GitHub仓库或Telegram联系获取技术支持。",
+            "GitHub": "我的GitHub仓库地址是：<a href='https://github.com/95277l' target='_blank'>点击访问</a>",
+            "Telegram": "你可以通过以下方式联系：<br>- 私人Telegram: @dopasel<br>- 交流群组: @dopaselll",
+            "谢谢": "不客气！随时为你效劳 😊",
+            "默认": "我还在学习中，暂时无法回答这个问题。你可以尝试问些其他问题~"
+        };
+        
+        // 切换聊天窗口显示
+        chatButton.addEventListener('click', () => {
+            chatContainer.style.display = chatContainer.style.display === 'flex' ? 'none' : 'flex';
+            chatButton.classList.remove('pulse');
+        });
+        
+        closeButton.addEventListener('click', () => {
+            chatContainer.style.display = 'none';
+        });
+        
+        // 发送消息函数
+        function sendMessage() {
+            const message = userInput.value.trim();
+            if (message === '') return;
+            
+            // 添加用户消息
+            addMessage(message, 'user');
+            userInput.value = '';
+            
+            // 模拟AI思考
+            setTimeout(() => {
+                const response = generateResponse(message);
+                addMessage(response, 'bot');
+            }, 800);
+        }
+        
+        // 添加消息到聊天窗口
+        function addMessage(text, sender) {
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('dopa-message', sender);
+            messageElement.innerHTML = text;
+            chatMessages.appendChild(messageElement);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        // 生成AI回复
+        function generateResponse(userMessage) {
+            const lowerCaseMsg = userMessage.toLowerCase();
+            
+            // 检查知识库
+            for (const [keyword, response] of Object.entries(knowledgeBase)) {
+                if (lowerCaseMsg.includes(keyword.toLowerCase())) {
+                    return response;
+                }
+            }
+            
+            // 默认回复
+            return knowledgeBase["默认"];
+        }
+        
+        // 发送消息事件监听
+        sendButton.addEventListener('click', sendMessage);
+        userInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+        
+        // 初始显示脉冲动画
+        setTimeout(() => {
+            chatButton.classList.add('pulse');
+        }, 3000);
     </script>
 </body>
 </html>
