@@ -1,127 +1,130 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>𝘥𝘰𝘱𝘢</title>
-        <link rel="stylesheet" href="./css/reset.css" />
-        <link rel="stylesheet" href="./css/style.css" />
-        <link
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
-            integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
-            crossorigin="anonymous"
-            referrerpolicy="no-referrer"
-        />
-    </head>
-    <body>
-        <div class="card">
-            <div class="user">
-                <div class="img-box">
-                    <img src="https://avatars.githubusercontent.com/u/50571734?s=100&u=82d49ceecfc580df6eb42a17ce8dc6fd4a01b356&v=4" />
-                </div>
-                <div class="content">
-                    <h2>永远保持一颗学习的心</h2>
-                    <h1>Always keep a heart of learning</h1>
-                </div>
-                <div class="toggle"></div>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>𝘥𝘰𝘱𝘢</title>
+    <link rel="stylesheet" href="./css/reset.css" />
+    <link rel="stylesheet" href="./css/style.css" />
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"
+    />
+    <!-- 将样式提前到head中 -->
+    <style>
+        /* 自定义聊天窗口样式 */
+        flowise-embed {
+            --chat-bubble-size: 60px;
+            --chat-bubble-icon-size: 30px;
+        }
+        
+        /* 添加动画效果 */
+        @keyframes dopa-pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        flowise-embed::part(chat-bubble) {
+            animation: dopa-pulse 2s infinite;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+            border-radius: 50%;
+        }
+        
+        flowise-embed::part(chat-container) {
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+        }
+        
+        flowise-embed::part(chat-header) {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+        }
+        
+        flowise-embed::part(chat-message-bot) {
+            border-radius: 18px 18px 18px 4px;
+            margin-right: 20px;
+        }
+        
+        flowise-embed::part(chat-message-user) {
+            border-radius: 18px 18px 4px 18px;
+            margin-left: 20px;
+        }
+        
+        flowise-embed::part(chat-input) {
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="user">
+            <div class="img-box">
+                <img src="https://avatars.githubusercontent.com/u/50571734?s=100&u=82d49ceecfc580df6eb42a17ce8dc6fd4a01b356&v=4" alt="用户头像" />
             </div>
-            <ul class="contact">
-                <li style="--cir: #c71610; --i: 0">
-                    <a href="https://github.com/95277l" target="_blank">
-                        <div class="icon-box"><i class="fa-brands fa-github"></i></div>
-                        <p>GitHub仓库地址</p>
-                    </a>
-                </li>
-                <li style="--cir: #171515; --i: 1">
-                    <a href="https://t.me/dopasel" target="_blank">
-                        <div class="icon-box"><i class="fa-brands fa-telegram"></i></div>
-                        <p>私人Telegram</p>
-                    </a>
-                </li>
-                <li style="--cir: #0a66c2; --i: 2">
-                    <a href="https://t.me/dopaselll" target="_blank">
-                        <div class="icon-box"><i class="fa-solid fa-user"></i></div>
-                        <p>交流群组</p>
-                    </a>
-                </li>
-            </ul>
+            <div class="content">
+                <h2>永远保持一颗学习的心</h2>
+                <h1>Always keep a heart of learning</h1>
+            </div>
+            <div class="toggle"></div>
         </div>
-        <script>
-            let toggle = document.querySelector('.toggle')
-            let card = document.querySelector('.card')
-            toggle.onclick = () => {
-                card.classList.toggle('active')
-            }
-        </script>
-    </body><!-- 添加dopa AI聊天助手 -->
-<script src="https://cdn.jsdelivr.net/npm/flowise-embed/dist/web.js"></script>
-<flowise-embed
-    chatflowid="a4a9c0f6-7b08-4b2b-9e9e-0a1e2b3c4d5e"
-    apiHost="https://flowiseai.onrender.com"
-    chatTitle="𝘥𝘰𝘱𝘢"
-    welcomeMessage="你好呀！我是𝘥𝘰𝘱𝘢，你的AI助手~有什么我可以帮你的吗？"
-    backgroundColor="#f5f7fa"
-    textColor="#1f2937"
-    buttonBackgroundColor="#6366f1"
-    buttonTextColor="#ffffff"
-    buttonSize="large"
-    buttonPosition="right"
-    poweredByTextColor="#9ca3af"
-    sendButtonColor="#6366f1"
-    userMessageBackground="#6366f1"
-    userMessageTextColor="#ffffff"
-    botMessageBackground="#ffffff"
-    botMessageTextColor="#1f2937"
-    fontSize="16px"
-    chatIcon="https://cdn-icons-png.flaticon.com/512/4712/4712035.png"
-></flowise-embed>
+        <ul class="contact">
+            <li style="--cir: #c71610; --i: 0">
+                <a href="https://github.com/95277l" target="_blank" rel="noopener noreferrer">
+                    <div class="icon-box"><i class="fa-brands fa-github"></i></div>
+                    <p>GitHub仓库地址</p>
+                </a>
+            </li>
+            <li style="--cir: #171515; --i: 1">
+                <a href="https://t.me/dopasel" target="_blank" rel="noopener noreferrer">
+                    <div class="icon-box"><i class="fa-brands fa-telegram"></i></div>
+                    <p>私人Telegram</p>
+                </a>
+            </li>
+            <li style="--cir: #0a66c2; --i: 2">
+                <a href="https://t.me/dopaselll" target="_blank" rel="noopener noreferrer">
+                    <div class="icon-box"><i class="fa-solid fa-user"></i></div>
+                    <p>交流群组</p>
+                </a>
+            </li>
+        </ul>
+    </div>
 
-<style>
-    /* 自定义聊天窗口样式 */
-    flowise-embed {
-        --chat-bubble-size: 60px;
-        --chat-bubble-icon-size: 30px;
-    }
-    
-    /* 添加动画效果 */
-    @keyframes dopa-pulse {
-        0% { transform: scale(1); }
-        50% { transform: scale(1.05); }
-        100% { transform: scale(1); }
-    }
-    
-    flowise-embed::part(chat-bubble) {
-        animation: dopa-pulse 2s infinite;
-        box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
-        border-radius: 50%;
-    }
-    
-    flowise-embed::part(chat-container) {
-        border-radius: 12px;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-        font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-    }
-    
-    flowise-embed::part(chat-header) {
-        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-        border-top-left-radius: 12px;
-        border-top-right-radius: 12px;
-    }
-    
-    flowise-embed::part(chat-message-bot) {
-        border-radius: 18px 18px 18px 4px;
-        margin-right: 20px;
-    }
-    
-    flowise-embed::part(chat-message-user) {
-        border-radius: 18px 18px 4px 18px;
-        margin-left: 20px;
-    }
-    
-    flowise-embed::part(chat-input) {
-        border-radius: 12px;
-        border: 1px solid #e5e7eb;
-    }
-</style>
+    <!-- 添加dopa AI聊天助手 -->
+    <script src="https://cdn.jsdelivr.net/npm/flowise-embed/dist/web.js"></script>
+    <flowise-embed
+        chatflowid="a4a9c0f6-7b08-4b2b-9e9e-0a1e2b3c4d5e"
+        apiHost="https://flowiseai.onrender.com"
+        chatTitle="𝘥𝘰𝘱𝘢"
+        welcomeMessage="你好呀！我是𝘥𝘰𝘱𝘢，你的AI助手~有什么我可以帮你的吗？"
+        backgroundColor="#f5f7fa"
+        textColor="#1f2937"
+        buttonBackgroundColor="#6366f1"
+        buttonTextColor="#ffffff"
+        buttonSize="large"
+        buttonPosition="right"
+        poweredByTextColor="#9ca3af"
+        sendButtonColor="#6366f1"
+        userMessageBackground="#6366f1"
+        userMessageTextColor="#ffffff"
+        botMessageBackground="#ffffff"
+        botMessageTextColor="#1f2937"
+        fontSize="16px"
+        chatIcon="https://cdn-icons-png.flaticon.com/512/4712/4712035.png"
+    ></flowise-embed>
+
+    <script>
+        let toggle = document.querySelector('.toggle')
+        let card = document.querySelector('.card')
+        toggle.onclick = () => {
+            card.classList.toggle('active')
+        }
+    </script>
+</body>
 </html>
