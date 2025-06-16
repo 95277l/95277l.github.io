@@ -156,6 +156,31 @@
               right: 10px;
             }
           }
+
+          /* 添加思考中的加载动画 */
+          .thinking-indicator {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+          }
+          .thinking-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #60a5fa;
+            margin: 0 3px;
+            animation: pulse 1.5s infinite ease-in-out;
+          }
+          .thinking-dot:nth-child(2) {
+            animation-delay: 0.2s;
+          }
+          .thinking-dot:nth-child(3) {
+            animation-delay: 0.4s;
+          }
+          @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.7; }
+          }
         </style>
     </head>
     <body>
@@ -228,6 +253,10 @@
                 content: '你好！我是你的 AI 助手，可以陪你聊天、回答问题或提供技术支持。今天有什么可以帮你的？'
               }
             ];
+            
+            // DeepSeek API Key - 替换为你自己的密钥
+            const DEEPSEEK_API_KEY = 'sk-5dc639a1dfa9492db2c7b70d8dd76795';
+            const DEEPSEEK_API_URL = 'https://api.deepseek.com/v1/chat/completions';
 
             // 切换聊天窗口显示/隐藏
             function toggleChatbot() {
@@ -242,6 +271,25 @@
             function getTimestamp() {
               const now = new Date();
               return `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+            }
+            
+            // 添加思考中提示
+            function addThinkingIndicator() {
+              const messagesDiv = document.getElementById('chatMessages');
+              const thinkingDiv = document.createElement('div');
+              thinkingDiv.className = 'message bot-message';
+              thinkingDiv.id = 'thinking-indicator';
+              thinkingDiv.innerHTML = `
+                <div class="thinking-indicator">
+                  <div class="thinking-dot"></div>
+                  <div class="thinking-dot"></div>
+                  <div class="thinking-dot"></div>
+                </div>
+                <div class="timestamp">${getTimestamp()}</div>
+              `;
+              messagesDiv.appendChild(thinkingDiv);
+              messagesDiv.scrollTop = messagesDiv.scrollHeight;
+              return thinkingDiv;
             }
 
             // 发送消息并获取回复
@@ -260,34 +308,52 @@
 
               // 更新对话历史
               conversationHistory.push({ role: 'user', content: userMessage });
-              if (conversationHistory.length > 10) {
-                conversationHistory = [conversationHistory[0], ...conversationHistory.slice(-9)];
+              
+              // 限制对话历史长度
+              if (conversationHistory.length > 15) {
+                // 保留系统消息和最近的对话
+                conversationHistory = [
+                  conversationHistory[0], 
+                  ...conversationHistory.slice(-14)
+                ];
               }
 
               // 清空输入框
               input.value = '';
-
+              
               // 滚动到底部
               messagesDiv.scrollTop = messagesDiv.scrollHeight;
+              
+              // 添加思考中提示
+              const thinkingIndicator = addThinkingIndicator();
 
-              // 调用 Vercel 后端代理
               try {
-                const response = await fetch('https://chatbot-backend.vercel.app/api/chat', { // 替换为你的 Vercel 域名
+                // 直接调用DeepSeek API
+                const response = await fetch(DEEPSEEK_API_URL, {
                   method: 'POST',
                   headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${DEEPSEEK_API_KEY}`
                   },
                   body: JSON.stringify({
+                    model: "deepseek-chat",
                     messages: conversationHistory,
-                  }),
+                    temperature: 0.7,
+                    max_tokens: 1000,
+                    stream: false
+                  })
                 });
 
                 if (!response.ok) {
-                  throw new Error('API 请求失败');
+                  const errorData = await response.json();
+                  throw new Error(errorData.error?.message || 'API请求失败');
                 }
 
                 const data = await response.json();
                 const botMessage = data.choices[0].message.content;
+
+                // 移除思考中提示
+                messagesDiv.removeChild(thinkingIndicator);
 
                 // 更新对话历史
                 conversationHistory.push({ role: 'assistant', content: botMessage });
@@ -302,9 +368,15 @@
                 messagesDiv.scrollTop = messagesDiv.scrollHeight;
               } catch (error) {
                 console.error('错误:', error);
+                
+                // 移除思考中提示
+                if (thinkingIndicator.parentNode) {
+                  messagesDiv.removeChild(thinkingIndicator);
+                }
+                
                 const errorMsgDiv = document.createElement('div');
                 errorMsgDiv.className = 'message bot-message';
-                errorMsgDiv.innerHTML = `抱歉，出了点问题，请稍后再试！<div class="timestamp">${getTimestamp()}</div>`;
+                errorMsgDiv.innerHTML = `抱歉，出了点问题: ${error.message}<div class="timestamp">${getTimestamp()}</div>`;
                 messagesDiv.appendChild(errorMsgDiv);
                 messagesDiv.scrollTop = messagesDiv.scrollHeight;
               }
