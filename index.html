@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -19,7 +19,7 @@
             /* 你的原有卡片样式 */
         }
         
-        /* 新增聊天助手样式 */
+        /* 聊天助手样式 */
         #dopa-chat-button {
             position: fixed;
             bottom: 30px;
@@ -136,11 +136,37 @@
             margin-left: auto;
         }
         
+        .dopa-message .timestamp {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 5px;
+            text-align: right;
+        }
+        
+        .dopa-typing {
+            display: none;
+            padding: 12px 16px;
+            color: #6b7280;
+            font-style: italic;
+        }
+        
+        .dopa-typing::after {
+            content: '正在输入...';
+            animation: typing 1.5s infinite;
+        }
+        
+        @keyframes typing {
+            0% { content: '正在输入.'; }
+            50% { content: '正在输入..'; }
+            100% { content: '正在输入...'; }
+        }
+        
         .dopa-chat-input-container {
             padding: 15px;
             border-top: 1px solid #e5e7eb;
             background: white;
             display: flex;
+            align-items: center;
         }
         
         #dopa-user-input {
@@ -163,9 +189,10 @@
             color: white;
             border: none;
             border-radius: 12px;
-            padding: 0 20px;
+            padding: 12px 20px;
             cursor: pointer;
             transition: background 0.3s;
+            font-size: 15px;
         }
         
         #dopa-send-btn:hover {
@@ -187,6 +214,16 @@
                 font-size: 24px;
                 bottom: 20px;
                 right: 20px;
+            }
+            
+            #dopa-user-input {
+                padding: 10px;
+                font-size: 14px;
+            }
+            
+            #dopa-send-btn {
+                padding: 10px 15px;
+                font-size: 14px;
             }
         }
     </style>
@@ -231,24 +268,27 @@
     <div id="dopa-chat-container">
         <div class="dopa-chat-header">
             <div class="dopa-chat-title">𝘥𝘰𝘱𝘢 AI助手</div>
-            <button class="dopa-close-btn">&times;</button>
+            <button class="dopa-close-btn">×</button>
         </div>
         <div class="dopa-chat-messages" id="dopa-chat-messages">
-            <div class="dopa-message bot">你好呀！我是𝘥𝘰𝘱𝘢，你的AI助手~有什么我可以帮你的吗？</div>
+            <div class="dopa-message bot">
+                嗨！我是𝘥𝘰𝘱𝘢，你的贴心AI助手！😊 想聊点什么？可以问我关于这个网站、技术支持，或者随便聊聊哦！
+                <div class="timestamp"></div>
+            </div>
         </div>
         <div class="dopa-chat-input-container">
-            <input type="text" id="dopa-user-input" placeholder="输入你的问题..." />
+            <input type="text" id="dopa-user-input" placeholder="输入你的问题或想聊的内容..." />
             <button id="dopa-send-btn">发送</button>
         </div>
     </div>
 
     <script>
         // 原始卡片切换功能
-        let toggle = document.querySelector('.toggle')
-        let card = document.querySelector('.card')
+        let toggle = document.querySelector('.toggle');
+        let card = document.querySelector('.card');
         toggle.onclick = () => {
-            card.classList.toggle('active')
-        }
+            card.classList.toggle('active');
+        };
 
         // 𝘥𝘰𝘱𝘢聊天功能
         const chatButton = document.getElementById('dopa-chat-button');
@@ -257,68 +297,93 @@
         const chatMessages = document.getElementById('dopa-chat-messages');
         const userInput = document.getElementById('dopa-user-input');
         const sendButton = document.getElementById('dopa-send-btn');
-        
-        // 预定义的问答知识库
+
+        // 扩展的问答知识库
         const knowledgeBase = {
-            "你好": "你好！我是𝘥𝘰𝘱𝘢，很高兴为你服务！",
-            "你是谁": "我是你的AI助手𝘥𝘰𝘱𝘢，可以帮助你解答问题和提供技术支持~",
-            "技术支持": "你可以通过GitHub仓库或Telegram联系获取技术支持。",
-            "GitHub": "我的GitHub仓库地址是：<a href='https://github.com/95277l' target='_blank'>点击访问</a>",
-            "Telegram": "你可以通过以下方式联系：<br>- 私人Telegram: @dopasel<br>- 交流群组: @dopaselll",
-            "谢谢": "不客气！随时为你效劳 😊",
-            "默认": "我还在学习中，暂时无法回答这个问题。你可以尝试问些其他问题~"
+            "你好|嗨|hi|hello": "你好！我是𝘥𝘰𝘱𝘢，欢迎来到这个酷炫的网站！😊 有什么我可以帮你的？",
+            "你是谁|你是什么|dopa是谁": "我是𝘥𝘰𝘱𝘢，你的AI助手，专门为这个网站提供支持！可以帮你解答问题、提供技术支持，或者随便聊聊~",
+            "技术支持|帮助|联系方式": "需要技术支持？可以通过以下方式联系：<br>- GitHub: <a href='https://github.com/95277l' target='_blank'>点击访问</a><br>- 私人Telegram: @dopasel<br>- 交流群组: @dopaselll",
+            "github|仓库": "我的GitHub仓库地址是：<a href='https://github.com/95277l' target='_blank'>点击访问</a>",
+            "telegram|联系": "你可以通过以下方式联系：<br>- 私人Telegram: @dopasel<br>- 交流群组: @dopaselll",
+            "网站做什么|这个网站是干嘛的": "这是一个展示编程、游戏开发和多媒体作品的个人网站！想了解更多？告诉我你感兴趣的部分！",
+            "谢谢|感谢": "不客气！随时为你效劳 😊",
+            "做什么|项目|作品": "这个网站的主人热衷于编程、游戏开发和多媒体创作！你可以问我具体项目详情哦！",
+            "学习|编程学习": "想学编程？建议从基础语言如 Python 或 JavaScript 开始！有什么具体的学习问题，我可以帮你解答！",
+            "默认": "嗯，我还在学习中，暂时没完全理解你的问题 😅 换个方式问问，或者聊点别的？"
         };
-        
+
         // 切换聊天窗口显示
         chatButton.addEventListener('click', () => {
             chatContainer.style.display = chatContainer.style.display === 'flex' ? 'none' : 'flex';
             chatButton.classList.remove('pulse');
         });
-        
+
         closeButton.addEventListener('click', () => {
             chatContainer.style.display = 'none';
         });
-        
-        // 发送消息函数
-        function sendMessage() {
-            const message = userInput.value.trim();
-            if (message === '') return;
-            
-            // 添加用户消息
-            addMessage(message, 'user');
-            userInput.value = '';
-            
-            // 模拟AI思考
-            setTimeout(() => {
-                const response = generateResponse(message);
-                addMessage(response, 'bot');
-            }, 800);
-        }
-        
+
         // 添加消息到聊天窗口
         function addMessage(text, sender) {
             const messageElement = document.createElement('div');
             messageElement.classList.add('dopa-message', sender);
-            messageElement.innerHTML = text;
+            const timestamp = new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
+            messageElement.innerHTML = `${text}<div class="timestamp">${timestamp}</div>`;
             chatMessages.appendChild(messageElement);
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
-        
+
+        // 显示“正在输入”动画
+        function showTypingIndicator() {
+            const typingElement = document.createElement('div');
+            typingElement.classList.add('dopa-typing');
+            chatMessages.appendChild(typingElement);
+            typingElement.style.display = 'block';
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            return typingElement;
+        }
+
+        // 移除“正在输入”动画
+        function removeTypingIndicator(typingElement) {
+            if (typingElement) {
+                typingElement.remove();
+            }
+        }
+
         // 生成AI回复
         function generateResponse(userMessage) {
             const lowerCaseMsg = userMessage.toLowerCase();
-            
-            // 检查知识库
-            for (const [keyword, response] of Object.entries(knowledgeBase)) {
-                if (lowerCaseMsg.includes(keyword.toLowerCase())) {
+            for (const [keywords, response] of Object.entries(knowledgeBase)) {
+                const keywordArray = keywords.split('|');
+                if (keywordArray.some(keyword => lowerCaseMsg.includes(keyword.toLowerCase()))) {
                     return response;
                 }
             }
-            
-            // 默认回复
             return knowledgeBase["默认"];
         }
-        
+
+        // 发送消息函数
+        function sendMessage() {
+            const message = userInput.value.trim();
+            if (message === '') {
+                userInput.placeholder = '请输入内容哦！';
+                return;
+            }
+
+            // 添加用户消息
+            addMessage(message, 'user');
+            userInput.value = '';
+
+            // 显示“正在输入”动画
+            const typingElement = showTypingIndicator();
+
+            // 模拟AI思考
+            setTimeout(() => {
+                removeTypingIndicator(typingElement);
+                const response = generateResponse(message);
+                addMessage(response, 'bot');
+            }, 1000);
+        }
+
         // 发送消息事件监听
         sendButton.addEventListener('click', sendMessage);
         userInput.addEventListener('keypress', (e) => {
@@ -326,11 +391,14 @@
                 sendMessage();
             }
         });
-        
+
         // 初始显示脉冲动画
         setTimeout(() => {
             chatButton.classList.add('pulse');
         }, 3000);
+
+        // 更新初始欢迎消息的时间戳
+        document.querySelector('.dopa-message.bot .timestamp').textContent = new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
     </script>
 </body>
 </html>
